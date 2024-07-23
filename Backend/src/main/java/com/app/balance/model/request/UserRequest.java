@@ -1,5 +1,6 @@
 package com.app.balance.model.request;
 
+import com.app.balance.model.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +18,5 @@ public class UserRequest {
     private String username;
     private String password;
     private String email;
-    private Set<String> roles;
+    private Set<Role> roles;
 }

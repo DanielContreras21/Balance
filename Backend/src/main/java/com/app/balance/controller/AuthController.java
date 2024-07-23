@@ -3,6 +3,7 @@ package com.app.balance.controller;
 import com.app.balance.model.request.LoginRequest;
 import com.app.balance.model.request.RegisterRequest;
 import com.app.balance.model.response.AuthResponse;
+import com.app.balance.model.response.LoginResponse;
 import com.app.balance.service.abstraction.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest login){
-        AuthResponse user = service.login(login);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest login){
+        LoginResponse user = service.login(login);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
  }

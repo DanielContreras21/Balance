@@ -1,4 +1,4 @@
-package com.app.balance.model.request;
+package com.app.balance.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,11 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class LoginRequest {
+public class LoginResponse {
     private String username;
-    private String password;
+    private String jwt;
 }
-

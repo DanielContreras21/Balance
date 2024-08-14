@@ -1,15 +1,10 @@
 package com.app.balance.model.mapper;
 
-import com.app.balance.model.entity.Permission;
 import com.app.balance.model.entity.Role;
 import com.app.balance.model.entity.User;
-import com.app.balance.model.enums.PermissionEnum;
-import com.app.balance.model.enums.RoleEnum;
-import com.app.balance.model.request.LoginRequest;
 import com.app.balance.model.request.RegisterRequest;
 import com.app.balance.model.request.UserRequest;
 import com.app.balance.model.response.AuthResponse;
-import com.app.balance.model.response.LoginResponse;
 import com.app.balance.model.response.UserResponse;
 import com.app.balance.repository.RoleRepository;
 import lombok.Builder;
@@ -17,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,17 +36,9 @@ public class UserMapper {
                 .build();
     }
 
-    public LoginResponse entityToLogin(LoginRequest request, String jwt){
-        return LoginResponse.builder()
-                .username(request.getUsername())
-                .jwt(jwt)
-                .build();
-    }
-
     public User dtoRegisterToEntity(RegisterRequest register){
-
         Set<Role> roles = register.getRoles().stream()
-                .map(id -> roleRepository.findById(id).orElseThrow(() -> new RuntimeException("Rol no encontrado")))
+                .map(Id -> roleRepository.findById(Id).orElseThrow())
                 .collect(Collectors.toSet());
 
         return User.builder()
@@ -66,17 +51,23 @@ public class UserMapper {
     }
 
     public UserResponse EntityToDtoGet(User user){
-
         return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .roles(user.getRoles())
+                .isEnabled(user.isEnabled())
+                .isAccountNonLocked(user.isAccountNonLocked())
+                .isCredentialsNonExpired(user.isCredentialsNonExpired())
+                .isAccountNonExpired(user.isAccountNonExpired())
                 .build();
     }
 
     public User dtoUpdateToEntity(UserRequest request){
+        Set<Role> roles = request.getRoles().stream()
+                .map(roleId -> roleRepository.findById(roleId).orElseThrow())
+                .collect(Collectors.toSet());
 
         return User.builder()
                 .id(request.getId())
@@ -84,7 +75,7 @@ public class UserMapper {
                 .username(request.getUsername())
                 .password(encoder.encode(request.getPassword()))
                 .email(request.getEmail())
-                .roles(request.getRoles())
+                .roles(roles)
                 .build();
     }
 }

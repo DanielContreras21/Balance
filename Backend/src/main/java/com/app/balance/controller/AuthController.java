@@ -5,6 +5,7 @@ import com.app.balance.model.request.RegisterRequest;
 import com.app.balance.model.response.AuthResponse;
 import com.app.balance.model.response.LoginResponse;
 import com.app.balance.service.abstraction.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication")
 public class AuthController {
 
     @Autowired

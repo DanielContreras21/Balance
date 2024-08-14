@@ -3,5 +3,6 @@ package com.app.balance.model.enums;
 public enum RoleEnum {
     ADMIN,
     USER,
-    INVITED
+    INVITED,
+    DEVELOPER
 }

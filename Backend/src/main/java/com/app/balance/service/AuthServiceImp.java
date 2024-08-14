@@ -1,6 +1,5 @@
 package com.app.balance.service;
 
-import com.app.balance.config.JwtUtils;
 import com.app.balance.model.entity.User;
 import com.app.balance.model.exception.UserAlreadyExistException;
 import com.app.balance.model.mapper.UserMapper;
@@ -10,10 +9,17 @@ import com.app.balance.model.response.AuthResponse;
 import com.app.balance.model.response.LoginResponse;
 import com.app.balance.repository.UserRepository;
 import com.app.balance.service.abstraction.AuthService;
+import com.app.balance.utils.JwtUtils;
+import com.app.balance.utils.UserDetailsServiceImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -28,10 +34,16 @@ public class AuthServiceImp implements AuthService {
     private final UserMapper mapper;
 
     @Autowired
-    private final UserDetailsServiceImp userDetailsService;
+    private final JwtUtils jwtUtils;
 
     @Autowired
-    private final JwtUtils jwtUtils;
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public AuthResponse register(RegisterRequest register) {
@@ -39,8 +51,7 @@ public class AuthServiceImp implements AuthService {
         if (!isUserExist){
             User user = mapper.dtoRegisterToEntity(register);
             repository.save(user);
-            AuthResponse response = mapper.entityToDtoRegister(user);
-            return response;
+            return mapper.entityToDtoRegister(user);
         }else {
             throw new UserAlreadyExistException("El usuario ya existe");
         }
@@ -51,11 +62,27 @@ public class AuthServiceImp implements AuthService {
         String username = login.getUsername();
         String password = login.getPassword();
 
-        Authentication authentication = userDetailsService.authenticate(username, password);
+        Authentication authentication = this.authenticate(username, password);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtUtils.createToken(authentication);
 
-        return mapper.entityToLogin(login, accessToken);
+        LoginResponse response = new LoginResponse(username, accessToken);
+
+        return response;
     }
+
+    public Authentication authenticate(String username, String password) {
+      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+      if (userDetails == null){
+          throw new BadCredentialsException("Nombre de usuario o contraseña incorrectos");
+      }
+      if (!passwordEncoder.matches(password, userDetails.getPassword())){
+          throw new BadCredentialsException("Nombre de usuario o contraseña incorrectos");
+      }
+      return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
+    }
+
 }

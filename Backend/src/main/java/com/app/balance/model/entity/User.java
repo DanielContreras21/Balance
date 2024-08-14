@@ -8,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Set;
+
 
 @Data
 @Builder
@@ -46,15 +46,17 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @Column(name = "is_enabled")
-    private Boolean isEnabled;
-
     @Column(name = "account_non_expired")
-    private Boolean isAccountNonExpired;
+    private boolean isAccountNonExpired;
 
     @Column(name = "account_non_locked")
-    private Boolean isAccountNonLocked;
+    private boolean isAccountNonLocked;
 
-    @Column(name = "credential_non_expired")
-    private Boolean isCredentialsNonExpired;
+    @Column(name = "credentials_non_expired")
+    private boolean isCredentialsNonExpired;
+
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
+
+
 }

@@ -1,4 +1,4 @@
-package com.app.balance.config;
+package com.app.balance.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -27,39 +27,46 @@ public class JwtUtils {
 
     public String createToken(Authentication authentication){
         Algorithm algorithm = Algorithm.HMAC256(privateKey);
+
         String username = authentication.getPrincipal().toString();
-        String authorities = authentication.getAuthorities()
-                .stream()
+        String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        return JWT.create()
-                .withIssuer(userGenerator)
+        String jwToken = JWT.create().withIssuer(userGenerator)
                 .withSubject(username)
                 .withClaim("authorities", authorities)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 600000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 18000000))
                 .withJWTId(UUID.randomUUID().toString())
                 .withNotBefore(new Date(System.currentTimeMillis()))
                 .sign(algorithm);
+
+        return jwToken;
     }
 
     public DecodedJWT validateToken(String token){
-
         try{
             Algorithm algorithm = Algorithm.HMAC256(privateKey);
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer(userGenerator).build();
-            return verifier.verify(token);
-        }catch (JWTVerificationException exception){
+
+            JWTVerifier verifier = JWT.require(algorithm)
+                    .withIssuer(userGenerator)
+                    .build();
+
+            DecodedJWT decodedJWT = verifier.verify(token);
+
+            return decodedJWT;
+        }
+        catch (JWTVerificationException exception){
             throw new JWTVerificationException("Invalid Token");
         }
     }
 
-    public String extractUsername(DecodedJWT decodedJWT){
-        return decodedJWT.getSubject();
+    public String extractUsername(DecodedJWT decodedJWt){
+        return decodedJWt.getSubject().toString();
     }
 
-    public Claim getSpecificClaim(DecodedJWT decodedJWT, String claimName){
+    public Claim getClaim(DecodedJWT decodedJWT, String claimName){
         return decodedJWT.getClaim(claimName);
     }
 

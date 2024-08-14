@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class RoleMapper {
 
     public Role dtoCreateToEntity(RoleRequest request){
-
         Set<Permission> permissions = request.getPermissions().stream().map(
                         permission -> Permission.builder()
                                 .name(PermissionEnum.valueOf(permission))

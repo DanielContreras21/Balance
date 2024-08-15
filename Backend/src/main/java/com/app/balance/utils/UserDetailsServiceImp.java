@@ -30,14 +30,9 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
-        user.getRoles()
-                .forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getName().name()))));
+        authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(user.getRole().getName().name())));
 
-        user.getRoles().stream()
-                .flatMap(role -> role.getPermissions().stream())
-                .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName().name())));
-
-
+        user.getRole().getPermissions().forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName().name())));
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
         user.getPassword(),

@@ -85,4 +85,15 @@ public class AuthServiceImp implements AuthService {
       return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
+    @Override
+    public AuthResponse registerSuperUser(RegisterRequest register) {
+        boolean isUserExist = repository.existsByEmail(register.getEmail());
+        if (!isUserExist){
+            User user = mapper.registerSuperUser(register);
+            repository.save(user);
+            return mapper.entityToDtoRegister(user);
+        }else {
+            throw new UserAlreadyExistException("El usuario ya existe");
+        }
+    }
 }

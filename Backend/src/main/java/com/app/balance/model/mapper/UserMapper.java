@@ -2,6 +2,7 @@ package com.app.balance.model.mapper;
 
 import com.app.balance.model.entity.Role;
 import com.app.balance.model.entity.User;
+import com.app.balance.model.enums.RoleEnum;
 import com.app.balance.model.request.RegisterRequest;
 import com.app.balance.model.request.UserRequest;
 import com.app.balance.model.response.AuthResponse;
@@ -12,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Builder
 @Component
@@ -32,21 +31,41 @@ public class UserMapper {
                 .name(user.getName())
                 .email(user.getEmail())
                 .username(user.getUsername())
-                .roles(user.getRoles())
+                .role(user.getRole())
                 .build();
     }
 
     public User dtoRegisterToEntity(RegisterRequest register){
-        Set<Role> roles = register.getRoles().stream()
-                .map(Id -> roleRepository.findById(Id).orElseThrow())
-                .collect(Collectors.toSet());
+
+        Role role = roleRepository.findByName(RoleEnum.valueOf("USER")).orElseThrow();
 
         return User.builder()
                 .name(register.getName())
                 .username(register.getUsername())
                 .password(encoder.encode(register.getPassword()))
                 .email(register.getEmail())
-                .roles(roles)
+                .role(role)
+                .isEnabled(true)
+                .isAccountNonExpired(true)
+                .isAccountNonLocked(true)
+                .isCredentialsNonExpired(true)
+                .build();
+    }
+
+    public User registerSuperUser(RegisterRequest register){
+
+        Role role = roleRepository.findByName(RoleEnum.valueOf("DEVELOPER")).orElseThrow();
+
+        return User.builder()
+                .name(register.getName())
+                .username(register.getUsername())
+                .password(encoder.encode(register.getPassword()))
+                .email(register.getEmail())
+                .role(role)
+                .isEnabled(true)
+                .isAccountNonExpired(true)
+                .isAccountNonLocked(true)
+                .isCredentialsNonExpired(true)
                 .build();
     }
 
@@ -56,7 +75,7 @@ public class UserMapper {
                 .name(user.getName())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .roles(user.getRoles())
+                .role(user.getRole())
                 .isEnabled(user.isEnabled())
                 .isAccountNonLocked(user.isAccountNonLocked())
                 .isCredentialsNonExpired(user.isCredentialsNonExpired())
@@ -65,9 +84,7 @@ public class UserMapper {
     }
 
     public User dtoUpdateToEntity(UserRequest request){
-        Set<Role> roles = request.getRoles().stream()
-                .map(roleId -> roleRepository.findById(roleId).orElseThrow())
-                .collect(Collectors.toSet());
+        Role role = roleRepository.findByName(RoleEnum.valueOf(request.getRole())).orElseThrow();
 
         return User.builder()
                 .id(request.getId())
@@ -75,7 +92,7 @@ public class UserMapper {
                 .username(request.getUsername())
                 .password(encoder.encode(request.getPassword()))
                 .email(request.getEmail())
-                .roles(roles)
+                .role(role)
                 .build();
     }
 }

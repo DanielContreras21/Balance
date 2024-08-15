@@ -8,4 +8,5 @@ import com.app.balance.model.response.LoginResponse;
 public interface AuthService {
     AuthResponse register(RegisterRequest register);
     LoginResponse login(LoginRequest login);
+    AuthResponse registerSuperUser(RegisterRequest register);
 }

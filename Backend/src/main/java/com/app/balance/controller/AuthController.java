@@ -31,6 +31,12 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
+    @PostMapping("/registerSuperUser")
+    public ResponseEntity<AuthResponse> registerSuperUser(@Valid @RequestBody RegisterRequest register){
+        AuthResponse user = service.registerSuperUser(register);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest login){
         LoginResponse user = service.login(login);

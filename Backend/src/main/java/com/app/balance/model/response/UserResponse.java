@@ -18,7 +18,7 @@ public class UserResponse {
     private String name;
     private String username;
     private String email;
-    private Set<Role> roles;
+    private Role role;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;

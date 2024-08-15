@@ -36,7 +36,6 @@ public class UserMapper {
     }
 
     public User dtoRegisterToEntity(RegisterRequest register){
-
         Role role = roleRepository.findByName(RoleEnum.valueOf("USER")).orElseThrow();
 
         return User.builder()
@@ -53,7 +52,6 @@ public class UserMapper {
     }
 
     public User registerSuperUser(RegisterRequest register){
-
         Role role = roleRepository.findByName(RoleEnum.valueOf("DEVELOPER")).orElseThrow();
 
         return User.builder()

@@ -1,12 +1,10 @@
 package com.app.balance.utils;
 
 import com.app.balance.model.entity.User;
-import com.app.balance.model.exception.UserNotExistException;
 import com.app.balance.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +34,10 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
         user.getPassword(),
+        user.isEnabled(),
+        user.isAccountNonExpired(),
+        user.isCredentialsNonExpired(),
+        user.isAccountNonLocked(),
         authorityList
         );
     }

@@ -41,13 +41,13 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
-                   http.requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login" ).permitAll();
-                   http.requestMatchers(HttpMethod.POST, "/auth/registerSuperUser", "/roles/create").hasRole("DEVELOPER");
-                   http.requestMatchers(HttpMethod.PUT, "/users/update").hasAuthority("UPDATE");
-                   http.requestMatchers(HttpMethod.POST, "/incomes/create", "/spents/create").hasAnyAuthority("CREATE");
-                   http.requestMatchers(HttpMethod.GET, "/users/{id}", "/incomes/{id}", "/incomes", "/balance", "/spents").hasAnyAuthority("READ");
-                   http.requestMatchers(HttpMethod.DELETE, "/incomes/{id}", "/spents/{id}").hasAuthority("DELETE");
-                   http.anyRequest().denyAll();
+                    http.requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login" ).permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/auth/registerSuperUser", "/roles/create").hasRole("DEVELOPER");
+                    http.requestMatchers(HttpMethod.PUT, "/users/update").hasAuthority("UPDATE");
+                    http.requestMatchers(HttpMethod.POST, "/incomes/create", "/spents/create").hasAnyAuthority("CREATE");
+                    http.requestMatchers(HttpMethod.GET, "/users/{id}", "/incomes/{id}", "/incomes", "/balance", "/spents").hasAnyAuthority("READ");
+                    http.requestMatchers(HttpMethod.DELETE, "/incomes/{id}", "/spents/{id}").hasAuthority("DELETE");
+                    http.anyRequest().permitAll();
                 })
                 .addFilterBefore(new JwtValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();

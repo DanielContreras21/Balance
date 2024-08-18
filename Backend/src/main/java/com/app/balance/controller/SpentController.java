@@ -15,6 +15,7 @@ import java.util.Optional;
 @RequestMapping("/spents")
 @RequiredArgsConstructor
 @Tag(name = "Spents")
+@CrossOrigin(origins = "*")
 public class SpentController {
 
     @Autowired

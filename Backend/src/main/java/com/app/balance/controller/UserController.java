@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Tag(name = "Users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired

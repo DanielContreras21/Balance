@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequestMapping("/incomes")
 @RequiredArgsConstructor
 @Tag(name = "Incomes")
+@CrossOrigin(origins = "*")
 public class IncomeController {
 
     @Autowired

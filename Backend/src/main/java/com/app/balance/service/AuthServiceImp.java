@@ -1,7 +1,6 @@
 package com.app.balance.service;
 
 import com.app.balance.model.entity.User;
-import com.app.balance.model.exception.UserAlreadyExistException;
 import com.app.balance.model.mapper.UserMapper;
 import com.app.balance.model.request.LoginRequest;
 import com.app.balance.model.request.RegisterRequest;
@@ -10,9 +9,9 @@ import com.app.balance.model.response.LoginResponse;
 import com.app.balance.repository.UserRepository;
 import com.app.balance.service.abstraction.AuthService;
 import com.app.balance.utils.JwtUtils;
-import com.app.balance.utils.UserDetailsServiceImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -54,16 +55,16 @@ public class AuthServiceImp implements AuthService {
                         repository.save(user);
                         return mapper.entityToDtoRegister(user);
                     } else {
-                        throw new BadCredentialsException("Los correo electrónicos no coinciden");
+                        throw new IllegalArgumentException("Los correo electrónicos no coinciden");
                     }
-                    }else {
-                        throw new BadCredentialsException("Las contraseñas no coinciden");
+                }else {
+                    throw new IllegalArgumentException("Las contraseñas no coinciden");
                 }
             }else {
-                throw new UserAlreadyExistException("El correo electrónico no se encuentra disponible");
+                throw new DuplicateKeyException("El correo electrónico no se encuentra disponible");
             }
         }else {
-            throw new UserAlreadyExistException("El nombre de usuario no se encuentra disponible");
+            throw new DuplicateKeyException("El nombre de usuario no se encuentra disponible");
         }
     }
 
@@ -81,10 +82,10 @@ public class AuthServiceImp implements AuthService {
 
                 return response;
             }else {
-                throw new BadCredentialsException("Ingrese una contraseña válida");
+                throw new NoSuchElementException("Ingrese una contraseña válida");
             }
         } else {
-            throw new BadCredentialsException("Ingrese un nombre de usuario válido");
+            throw new NoSuchElementException("Ingrese un nombre de usuario válido");
         }
     }
 
@@ -92,10 +93,10 @@ public class AuthServiceImp implements AuthService {
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
       if (userDetails == null){
-          throw new BadCredentialsException("Nombre de usuario o contraseña incorrectos");
+          throw new IllegalArgumentException("Nombre de usuario o contraseña incorrectos");
       }
       if (!passwordEncoder.matches(password, userDetails.getPassword())){
-          throw new BadCredentialsException("Nombre de usuario o contraseña incorrectos");
+          throw new IllegalArgumentException("Nombre de usuario o contraseña incorrectos");
       }
       return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
     }
@@ -112,16 +113,16 @@ public class AuthServiceImp implements AuthService {
                         repository.save(user);
                         return mapper.entityToDtoRegister(user);
                     } else {
-                        throw new BadCredentialsException("Los correo electrónicos no coinciden");
+                        throw new IllegalArgumentException("Los correo electrónicos no coinciden");
                     }
                 }else {
-                    throw new BadCredentialsException("Las contraseñas no coinciden");
+                    throw new IllegalArgumentException("Las contraseñas no coinciden");
                 }
             }else {
-                throw new UserAlreadyExistException("El correo electrónico no se encuentra disponible");
+                throw new DuplicateKeyException("El correo electrónico no se encuentra disponible");
             }
         }else {
-            throw new UserAlreadyExistException("El nombre de usuario no se encuentra disponible");
+            throw new DuplicateKeyException("El nombre de usuario no se encuentra disponible");
         }
     }
 }

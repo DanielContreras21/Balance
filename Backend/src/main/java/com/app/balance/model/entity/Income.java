@@ -3,6 +3,8 @@ package com.app.balance.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,8 +25,12 @@ public class Income {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Ingrese un concepto")
+    @NotBlank(message = "Ingrese un concepto")
     private String concept;
 
+    @NotNull(message = "Ingrese una cantidad")
+    @NotBlank(message = "Ingrese una cantidad")
     private Double quantity;
 
     @Column(name = "created")

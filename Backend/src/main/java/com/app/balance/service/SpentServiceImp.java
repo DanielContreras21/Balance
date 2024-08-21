@@ -1,21 +1,15 @@
 package com.app.balance.service;
 
-import com.app.balance.model.entity.Income;
 import com.app.balance.model.entity.Spent;
 import com.app.balance.model.entity.User;
-import com.app.balance.model.exception.UserNotExistException;
 import com.app.balance.model.mapper.SpentMapper;
-import com.app.balance.model.request.IncomeRequest;
 import com.app.balance.model.request.SpentRequest;
 import com.app.balance.model.response.SpentResponse;
 import com.app.balance.repository.SpentRepository;
-import com.app.balance.repository.UserRepository;
 import com.app.balance.service.abstraction.SpentService;
 import com.app.balance.utils.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

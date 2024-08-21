@@ -26,23 +26,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "Ingrese un nombre válido")
+    @NotNull(message = "Ingrese un nombre válido")
     private String name;
 
     @Column(unique = true)
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "Ingrese un nombre de usuario válido")
+    @NotNull(message = "Ingrese un nombre de usuario válido")
     private String username;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "Ingrese una contraseña válida")
+    @NotNull(message = "Ingrese una contraseña válida")
     private String password;
 
     @Column(unique = true)
-    @NotBlank
-    @NotNull
-    @Email
+    @NotBlank(message = "Ingrese un correo electrónico válido")
+    @NotNull(message = "Ingrese un correo electrónico válido")
+    @Email(message = "Ingrese un correo electrónico válido")
     private String email;
 
     @Column(name = "created")

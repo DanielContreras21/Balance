@@ -72,7 +72,11 @@ public class AuthServiceImp implements AuthService {
     public LoginResponse login(LoginRequest login) {
         String username = login.getUsername();
         String password = login.getPassword();
+        boolean isUserExist = repository.existsByUsername(username);
 
+        if (!isUserExist){
+            throw new NoSuchElementException("Ingrese un nombre de usuario válido");
+        }
         if (!username.isBlank()){
             if (!password.isBlank()){
                 Authentication authentication = this.authenticate(username, password);
@@ -92,8 +96,7 @@ public class AuthServiceImp implements AuthService {
     public Authentication authenticate(String username, String password) {
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-
-      if (userDetails == null || !userDetails.equals(userDetails)){
+      if (userDetails == null){
           throw new IllegalArgumentException("Nombre de usuario o contraseña incorrectos");
       }
       if (!passwordEncoder.matches(password, userDetails.getPassword())){

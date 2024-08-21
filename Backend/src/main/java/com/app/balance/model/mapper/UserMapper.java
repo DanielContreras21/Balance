@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Builder
 @Component
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class UserMapper {
                 .password(encoder.encode(register.getPassword()))
                 .email(register.getEmail())
                 .role(role)
+                .created(new Date())
                 .isEnabled(true)
                 .isAccountNonExpired(true)
                 .isAccountNonLocked(true)
@@ -60,6 +63,7 @@ public class UserMapper {
                 .password(encoder.encode(register.getPassword()))
                 .email(register.getEmail())
                 .role(role)
+                .created(new Date())
                 .isEnabled(true)
                 .isAccountNonExpired(true)
                 .isAccountNonLocked(true)

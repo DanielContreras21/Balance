@@ -44,17 +44,26 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public AuthResponse register(RegisterRequest register) {
-        boolean isUserExist = repository.existsByEmail(register.getEmail());
+        boolean isEmailExist = repository.existsByEmail(register.getEmail());
+        boolean isUserExist = repository.existsByUsername(register.getUsername());
         if (!isUserExist){
-            if (register.getPassword().equals(register.getConfirmPassword())){
-                User user = mapper.dtoRegisterToEntity(register);
-                repository.save(user);
-                return mapper.entityToDtoRegister(user);
-            } else {
-                throw new BadCredentialsException("Las Contraseñas no Coinciden");
+            if(!isEmailExist){
+                if (register.getPassword().equals(register.getConfirmPassword())){
+                    if (register.getEmail().equals(register.getConfirmEmail())){
+                        User user = mapper.dtoRegisterToEntity(register);
+                        repository.save(user);
+                        return mapper.entityToDtoRegister(user);
+                    } else {
+                        throw new BadCredentialsException("Los correo electrónicos no coinciden");
+                    }
+                    }else {
+                        throw new BadCredentialsException("Las contraseñas no coinciden");
+                }
+            }else {
+                throw new UserAlreadyExistException("El correo electrónico no se encuentra disponible");
             }
         }else {
-            throw new UserAlreadyExistException("El usuario ya existe");
+            throw new UserAlreadyExistException("El nombre de usuario no se encuentra disponible");
         }
     }
 
@@ -63,15 +72,20 @@ public class AuthServiceImp implements AuthService {
         String username = login.getUsername();
         String password = login.getPassword();
 
-        Authentication authentication = this.authenticate(username, password);
+        if (!username.isBlank()){
+            if (!password.isBlank()){
+                Authentication authentication = this.authenticate(username, password);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String accessToken = jwtUtils.createToken(authentication);
+                LoginResponse response = new LoginResponse(username, accessToken);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String accessToken = jwtUtils.createToken(authentication);
-
-        LoginResponse response = new LoginResponse(username, accessToken);
-
-        return response;
+                return response;
+            }else {
+                throw new BadCredentialsException("Ingrese una contraseña válida");
+            }
+        } else {
+            throw new BadCredentialsException("Ingrese un nombre de usuario válido");
+        }
     }
 
     public Authentication authenticate(String username, String password) {
@@ -88,13 +102,26 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public AuthResponse registerSuperUser(RegisterRequest register) {
-        boolean isUserExist = repository.existsByEmail(register.getEmail());
+        boolean isEmailExist = repository.existsByEmail(register.getEmail());
+        boolean isUserExist = repository.existsByUsername(register.getUsername());
         if (!isUserExist){
-            User user = mapper.registerSuperUser(register);
-            repository.save(user);
-            return mapper.entityToDtoRegister(user);
+            if(!isEmailExist){
+                if (register.getPassword().equals(register.getConfirmPassword())){
+                    if (register.getEmail().equals(register.getConfirmEmail())){
+                        User user = mapper.dtoRegisterToEntity(register);
+                        repository.save(user);
+                        return mapper.entityToDtoRegister(user);
+                    } else {
+                        throw new BadCredentialsException("Los correo electrónicos no coinciden");
+                    }
+                }else {
+                    throw new BadCredentialsException("Las contraseñas no coinciden");
+                }
+            }else {
+                throw new UserAlreadyExistException("El correo electrónico no se encuentra disponible");
+            }
         }else {
-            throw new UserAlreadyExistException("El usuario ya existe");
+            throw new UserAlreadyExistException("El nombre de usuario no se encuentra disponible");
         }
     }
 }

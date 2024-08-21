@@ -92,7 +92,8 @@ public class AuthServiceImp implements AuthService {
     public Authentication authenticate(String username, String password) {
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-      if (userDetails == null){
+
+      if (userDetails == null || !userDetails.equals(userDetails)){
           throw new IllegalArgumentException("Nombre de usuario o contraseña incorrectos");
       }
       if (!passwordEncoder.matches(password, userDetails.getPassword())){

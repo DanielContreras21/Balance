@@ -37,9 +37,6 @@ public class AuthServiceImp implements AuthService {
     private final JwtUtils jwtUtils;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -49,9 +46,13 @@ public class AuthServiceImp implements AuthService {
     public AuthResponse register(RegisterRequest register) {
         boolean isUserExist = repository.existsByEmail(register.getEmail());
         if (!isUserExist){
-            User user = mapper.dtoRegisterToEntity(register);
-            repository.save(user);
-            return mapper.entityToDtoRegister(user);
+            if (register.getPassword().equals(register.getConfirmPassword())){
+                User user = mapper.dtoRegisterToEntity(register);
+                repository.save(user);
+                return mapper.entityToDtoRegister(user);
+            } else {
+                throw new BadCredentialsException("Las Contraseñas no Coinciden");
+            }
         }else {
             throw new UserAlreadyExistException("El usuario ya existe");
         }

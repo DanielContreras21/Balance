@@ -1,6 +1,7 @@
 package com.app.balance.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,14 +20,16 @@ import java.util.Date;
 public class Income {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String concept;
 
     private Double quantity;
 
-    private Date date;
+    @Column(name = "created")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private Date created;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

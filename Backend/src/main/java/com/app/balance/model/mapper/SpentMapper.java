@@ -21,7 +21,7 @@ public class SpentMapper {
         return Spent.builder()
                 .concept(request.getConcept())
                 .quantity(request.getQuantity())
-                .date(new Date())
+                .created(new Date())
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class SpentMapper {
                 .id(spent.getId())
                 .concept(spent.getConcept())
                 .quantity(spent.getQuantity())
-                .date(spent.getDate())
+                .date(spent.getCreated())
                 .build();
     }
 }

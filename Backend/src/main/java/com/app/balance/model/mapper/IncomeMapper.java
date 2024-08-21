@@ -18,7 +18,7 @@ public class IncomeMapper {
         return Income.builder()
                 .concept(request.getConcept())
                 .quantity(request.getQuantity())
-                .date(new Date())
+                .created(new Date())
                 .build();
     }
 
@@ -27,7 +27,7 @@ public class IncomeMapper {
                 .id(income.getId())
                 .concept(income.getConcept())
                 .quantity(income.getQuantity())
-                .date(income.getDate())
+                .date(income.getCreated())
                 .build();
     }
 }

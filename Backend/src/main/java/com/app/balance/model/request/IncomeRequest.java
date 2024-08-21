@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class IncomeRequest {
-    private Long id;
     private String concept;
     private Double quantity;
 }

@@ -1,7 +1,5 @@
 package com.app.balance.config;
 
-import com.app.balance.model.entity.User;
-import com.app.balance.model.exception.UserNotExistException;
 import com.app.balance.utils.JwtUtils;
 import com.app.balance.utils.UserDetailsServiceImp;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +16,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -42,10 +38,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login" ).permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/auth/registerSuperUser", "/roles/create").hasRole("DEVELOPER");
+                    http.requestMatchers(HttpMethod.POST, "/auth/registerSuperUser", "/roles/create").
+                            hasRole("DEVELOPER");
+//                            permitAll();
                     http.requestMatchers(HttpMethod.PUT, "/users/update").hasAuthority("UPDATE");
                     http.requestMatchers(HttpMethod.POST, "/incomes/create", "/spents/create").hasAnyAuthority("CREATE");
-                    http.requestMatchers(HttpMethod.GET, "/users/{id}", "/incomes/{id}", "/incomes", "/balance", "/spents").hasAnyAuthority("READ");
+                    http.requestMatchers(HttpMethod.GET, "/users/{id}", "/incomes/{id}", "/incomes", "/balance", "/spents", "/spents/{id}").hasAnyAuthority("READ");
                     http.requestMatchers(HttpMethod.DELETE, "/incomes/{id}", "/spents/{id}").hasAuthority("DELETE");
                     http.anyRequest().permitAll();
                 })

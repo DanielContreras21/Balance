@@ -12,4 +12,5 @@ public interface SpentService {
     Optional<SpentResponse> findById(Long id);
     void createSpent(SpentRequest request);
     List<Spent> findAllByUser();
+    void updateSpent(SpentRequest request);
 }

@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface IncomeRepository extends JpaRepository<Income, Long> {
     List<Income> findByUser(User user);
+    Income findIncomeById(Long id);
 }

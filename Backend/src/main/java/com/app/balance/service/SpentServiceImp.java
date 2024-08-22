@@ -1,8 +1,10 @@
 package com.app.balance.service;
 
+import com.app.balance.model.entity.Income;
 import com.app.balance.model.entity.Spent;
 import com.app.balance.model.entity.User;
 import com.app.balance.model.mapper.SpentMapper;
+import com.app.balance.model.request.IncomeRequest;
 import com.app.balance.model.request.SpentRequest;
 import com.app.balance.model.response.SpentResponse;
 import com.app.balance.repository.SpentRepository;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -36,11 +39,39 @@ public class SpentServiceImp implements SpentService {
         repository.save(spent);
     }
 
+
+
     @Override
     public List<Spent> findAllByUser() {
         User user = currentUser.getCurrentUser();
         List<Spent> spents = repository.findByUser(user);
         return spents;
+    }
+
+    @Override
+    public void updateSpent(SpentRequest request) {
+        boolean isSpentExist = repository.existsById(request.getId());
+
+        if (isSpentExist){
+            Spent spent = repository.findSpentById(request.getId());
+            if (request.getConcept() == null){
+                spent.setConcept(spent.getConcept());
+            } else {
+                spent.setConcept(request.getConcept());
+            }
+            if (request.getQuantity() == null){
+                spent.setQuantity(spent.getQuantity());
+            } else {
+                spent.setQuantity(request.getQuantity());
+            }
+            spent.setId(spent.getId());
+            spent.setUser(spent.getUser());
+            spent.setCreated(spent.getCreated());
+
+            repository.save(spent);
+        }else {
+            throw new NoSuchElementException("El ingreso no existe");
+        }
     }
 
     @Override

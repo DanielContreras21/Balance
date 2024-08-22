@@ -113,7 +113,7 @@ public class AuthServiceImp implements AuthService {
         if (!register.getEmail().equals(register.getConfirmEmail())){
             throw new IllegalArgumentException("Los correo electrónicos no coinciden");
         }
-        User user = mapper.dtoRegisterToEntity(register);
+        User user = mapper.registerSuperUser(register);
         repository.save(user);
         return mapper.entityToDtoRegister(user);
     }

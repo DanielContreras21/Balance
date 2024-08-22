@@ -72,29 +72,19 @@ public class UserMapper {
     }
 
     public UserResponse EntityToDtoGet(User user){
+
+        String role = user.getRole().toString();
+
         return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .role(user.getRole())
+                .role(role)
                 .isEnabled(user.isEnabled())
                 .isAccountNonLocked(user.isAccountNonLocked())
                 .isCredentialsNonExpired(user.isCredentialsNonExpired())
                 .isAccountNonExpired(user.isAccountNonExpired())
-                .build();
-    }
-
-    public User dtoUpdateToEntity(UserRequest request){
-        Role role = roleRepository.findByName(RoleEnum.valueOf(request.getRole())).orElseThrow();
-
-        return User.builder()
-                .id(request.getId())
-                .name(request.getName())
-                .username(request.getUsername())
-                .password(encoder.encode(request.getPassword()))
-                .email(request.getEmail())
-                .role(role)
                 .build();
     }
 }

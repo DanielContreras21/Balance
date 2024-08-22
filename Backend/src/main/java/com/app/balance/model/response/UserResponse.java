@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -18,7 +19,8 @@ public class UserResponse {
     private String name;
     private String username;
     private String email;
-    private Role role;
+    private String role;
+    private Date created;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;

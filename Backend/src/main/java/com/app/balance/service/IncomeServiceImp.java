@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -41,6 +42,32 @@ public class IncomeServiceImp implements IncomeService {
         User user = currentUser.getCurrentUser();
         List<Income> incomes = repository.findByUser(user);
         return incomes;
+    }
+
+    @Override
+    public void updateIncome(IncomeRequest request) {
+        boolean isIncomeExist = repository.existsById(request.getId());
+
+        if (isIncomeExist){
+            Income income = repository.findIncomeById(request.getId());
+            if (request.getConcept() == null){
+                income.setConcept(income.getConcept());
+            } else {
+                income.setConcept(request.getConcept());
+            }
+            if (request.getQuantity() == null){
+                income.setQuantity(income.getQuantity());
+            } else {
+                income.setQuantity(request.getQuantity());
+            }
+            income.setId(income.getId());
+            income.setUser(income.getUser());
+            income.setCreated(income.getCreated());
+
+            repository.save(income);
+        }else {
+            throw new NoSuchElementException("El ingreso no existe");
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class SpentRequest {
+    private Long id;
     private String concept;
     private Double quantity;
 }

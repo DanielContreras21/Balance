@@ -38,10 +38,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login" ).permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/auth/registerSuperUser", "/roles/create").
+                    http.requestMatchers(HttpMethod.POST, "/auth/registerSuperUser", "/roles/create", "/users/updateRole", "/users/").
                             hasRole("DEVELOPER");
 //                            permitAll();
-                    http.requestMatchers(HttpMethod.PUT, "/users/update").hasAuthority("UPDATE");
+                    http.requestMatchers(HttpMethod.PUT, "/users/update", "users/updatePassword").hasAuthority("UPDATE");
                     http.requestMatchers(HttpMethod.POST, "/incomes/create", "/spents/create").hasAnyAuthority("CREATE");
                     http.requestMatchers(HttpMethod.GET, "/users/{id}", "/incomes/{id}", "/incomes", "/balance", "/spents", "/spents/{id}").hasAnyAuthority("READ");
                     http.requestMatchers(HttpMethod.DELETE, "/incomes/{id}", "/spents/{id}").hasAuthority("DELETE");

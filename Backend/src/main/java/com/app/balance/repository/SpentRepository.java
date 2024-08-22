@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface SpentRepository extends JpaRepository<Spent, Long> {
     List<Spent> findByUser(User user);
+    Spent findSpentById(Long id);
 }

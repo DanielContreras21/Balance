@@ -5,6 +5,7 @@ import com.app.balance.model.request.IncomeRequest;
 import com.app.balance.model.response.IncomeResponse;
 import com.app.balance.service.abstraction.IncomeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class IncomeController {
     private final IncomeService service;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createIncome(@RequestBody IncomeRequest request){
+    public ResponseEntity<?> createIncome(@Valid @RequestBody IncomeRequest request){
         service.createIncome(request);
         return ResponseEntity.ok("Income created");
     }

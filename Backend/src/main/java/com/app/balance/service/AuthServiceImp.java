@@ -12,7 +12,6 @@ import com.app.balance.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.NoSuchElementException;
 
 
@@ -47,25 +45,21 @@ public class AuthServiceImp implements AuthService {
     public AuthResponse register(RegisterRequest register) {
         boolean isEmailExist = repository.existsByEmail(register.getEmail());
         boolean isUserExist = repository.existsByUsername(register.getUsername());
-        if (!isUserExist){
-            if(!isEmailExist){
-                if (register.getPassword().equals(register.getConfirmPassword())){
-                    if (register.getEmail().equals(register.getConfirmEmail())){
-                        User user = mapper.dtoRegisterToEntity(register);
-                        repository.save(user);
-                        return mapper.entityToDtoRegister(user);
-                    } else {
-                        throw new IllegalArgumentException("Los correo electrónicos no coinciden");
-                    }
-                }else {
-                    throw new IllegalArgumentException("Las contraseñas no coinciden");
-                }
-            }else {
-                throw new DuplicateKeyException("El correo electrónico no se encuentra disponible");
-            }
-        }else {
+        if (isUserExist) {
             throw new DuplicateKeyException("El nombre de usuario no se encuentra disponible");
         }
+        if(isEmailExist) {
+            throw new DuplicateKeyException("El correo electrónico no se encuentra disponible");
+        }
+        if (!register.getPassword().equals(register.getConfirmPassword())) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden");
+        }
+        if (!register.getEmail().equals(register.getConfirmEmail())){
+            throw new IllegalArgumentException("Los correo electrónicos no coinciden");
+        }
+        User user = mapper.dtoRegisterToEntity(register);
+        repository.save(user);
+        return mapper.entityToDtoRegister(user);
     }
 
     @Override
@@ -77,23 +71,21 @@ public class AuthServiceImp implements AuthService {
         if (!isUserExist){
             throw new NoSuchElementException("Ingrese un nombre de usuario válido");
         }
-        if (!username.isBlank()){
-            if (!password.isBlank()){
-                Authentication authentication = this.authenticate(username, password);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                String accessToken = jwtUtils.createToken(authentication);
-                LoginResponse response = new LoginResponse(username, accessToken);
-
-                return response;
-            }else {
-                throw new NoSuchElementException("Ingrese una contraseña válida");
-            }
-        } else {
+        if (username.isBlank()) {
             throw new NoSuchElementException("Ingrese un nombre de usuario válido");
         }
+        if (password.isBlank()) {
+            throw new NoSuchElementException("Ingrese una contraseña válida");
+        }
+        Authentication authentication = this.authenticate(username, password);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String accessToken = jwtUtils.createToken(authentication);
+        LoginResponse response = new LoginResponse(username, accessToken);
+
+        return response;
     }
 
-    public Authentication authenticate(String username, String password) {
+    private Authentication authenticate(String username, String password) {
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
       if (userDetails == null){
@@ -109,24 +101,20 @@ public class AuthServiceImp implements AuthService {
     public AuthResponse registerSuperUser(RegisterRequest register) {
         boolean isEmailExist = repository.existsByEmail(register.getEmail());
         boolean isUserExist = repository.existsByUsername(register.getUsername());
-        if (!isUserExist){
-            if(!isEmailExist){
-                if (register.getPassword().equals(register.getConfirmPassword())){
-                    if (register.getEmail().equals(register.getConfirmEmail())){
-                        User user = mapper.dtoRegisterToEntity(register);
-                        repository.save(user);
-                        return mapper.entityToDtoRegister(user);
-                    } else {
-                        throw new IllegalArgumentException("Los correo electrónicos no coinciden");
-                    }
-                }else {
-                    throw new IllegalArgumentException("Las contraseñas no coinciden");
-                }
-            }else {
-                throw new DuplicateKeyException("El correo electrónico no se encuentra disponible");
-            }
-        }else {
+        if (isUserExist) {
             throw new DuplicateKeyException("El nombre de usuario no se encuentra disponible");
         }
+        if(isEmailExist) {
+            throw new DuplicateKeyException("El correo electrónico no se encuentra disponible");
+        }
+        if (!register.getPassword().equals(register.getConfirmPassword())) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden");
+        }
+        if (!register.getEmail().equals(register.getConfirmEmail())){
+            throw new IllegalArgumentException("Los correo electrónicos no coinciden");
+        }
+        User user = mapper.dtoRegisterToEntity(register);
+        repository.save(user);
+        return mapper.entityToDtoRegister(user);
     }
 }

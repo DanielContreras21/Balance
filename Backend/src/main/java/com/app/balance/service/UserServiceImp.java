@@ -9,7 +9,10 @@ import com.app.balance.service.abstraction.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +32,7 @@ public class UserServiceImp implements UserService {
         if (isUserExist){
             return searched;
         }else {
-            throw new EntityNotFoundException("EL usuario no existe");
+            throw new NoSuchElementException("EL usuario no existe");
         }
     }
 
@@ -40,7 +43,7 @@ public class UserServiceImp implements UserService {
             User user = mapper.dtoUpdateToEntity(request);
             repository.save(user);
         } else {
-            throw new EntityNotFoundException("User not found");
+            throw new NoSuchElementException("EL usuario no existe");
         }
     }
 }

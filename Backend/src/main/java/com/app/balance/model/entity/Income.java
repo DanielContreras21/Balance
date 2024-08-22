@@ -30,7 +30,6 @@ public class Income {
     private String concept;
 
     @NotNull(message = "Ingrese una cantidad")
-    @NotBlank(message = "Ingrese una cantidad")
     private Double quantity;
 
     @Column(name = "created")

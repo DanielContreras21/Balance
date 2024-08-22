@@ -26,13 +26,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handleException(NoSuchElementException exc){
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         return buildResponseEntity(httpStatus, exc);
     }
 
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handleException(DuplicateKeyException exc){
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
         return buildResponseEntity(httpStatus, exc);
     }
 
@@ -40,18 +40,5 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleException(IllegalArgumentException exc){
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, exc);
-    }
-
-
-    @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(MethodArgumentTypeMismatchException exc){
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        return buildResponseEntity(httpStatus, new RuntimeException("Tipo de argmento invalido"));
-    }
-
-    @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(Exception exc){
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        return buildResponseEntity(httpStatus, new RuntimeException("Se presentó un problema, intentelo mas tarde"));
     }
 }

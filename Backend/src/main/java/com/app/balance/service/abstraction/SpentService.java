@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface SpentService {
     void deleteById(Long id);
     Optional<SpentResponse> findById(Long id);
-    void createSpent(SpentRequest request);
-    List<Spent> findAllByUser();
+    SpentResponse createSpent(SpentRequest request);
+    List<SpentResponse> findAllByUser();
     void updateSpent(SpentRequest request);
 }

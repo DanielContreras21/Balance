@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,9 +23,9 @@ public class SpentController {
     private final SpentService service;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createSpent(@RequestBody SpentRequest request){
-        service.createSpent(request);
-        return ResponseEntity.ok("Spent created");
+    public ResponseEntity<SpentResponse> createSpent(@RequestBody SpentRequest request){
+        SpentResponse response = service.createSpent(request);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
@@ -37,5 +38,11 @@ public class SpentController {
     public ResponseEntity<String> deleteSpent(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.ok("Deleted Successfully");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SpentResponse>> getAllSpentsByUser(){
+        List<SpentResponse> response = service.findAllByUser();
+        return ResponseEntity.ok(response);
     }
 }

@@ -5,6 +5,7 @@ import com.app.balance.model.entity.User;
 import com.app.balance.model.mapper.IncomeMapper;
 import com.app.balance.model.request.IncomeRequest;
 import com.app.balance.model.response.IncomeResponse;
+import com.app.balance.model.response.SpentResponse;
 import com.app.balance.repository.IncomeRepository;
 import com.app.balance.service.abstraction.IncomeService;
 import com.app.balance.utils.CurrentUser;
@@ -30,18 +31,22 @@ public class IncomeServiceImp implements IncomeService {
     private IncomeMapper mapper;
 
     @Override
-    public void createIncome(IncomeRequest request) {
+    public IncomeResponse createIncome(IncomeRequest request) {
         User user = currentUser.getCurrentUser();
         Income income = mapper.dtoToEntity(request);
         income.setUser(user);
         repository.save(income);
+        IncomeResponse incomeResponse = mapper.entitytoDto(income);
+        return incomeResponse;
     }
 
     @Override
-    public List<Income> findAllByUser() {
+    public List<IncomeResponse> findAllByUser() {
         User user = currentUser.getCurrentUser();
         List<Income> incomes = repository.findByUser(user);
-        return incomes;
+        List<IncomeResponse> incomesResponse = incomes.stream().map(
+                mapper::entitytoDto).toList();
+        return incomesResponse;
     }
 
     @Override

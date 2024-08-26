@@ -1,10 +1,8 @@
 package com.app.balance.service;
 
-import com.app.balance.model.entity.Income;
 import com.app.balance.model.entity.Spent;
 import com.app.balance.model.entity.User;
 import com.app.balance.model.mapper.SpentMapper;
-import com.app.balance.model.request.IncomeRequest;
 import com.app.balance.model.request.SpentRequest;
 import com.app.balance.model.response.SpentResponse;
 import com.app.balance.repository.SpentRepository;
@@ -32,20 +30,24 @@ public class SpentServiceImp implements SpentService {
     private SpentMapper mapper;
 
     @Override
-    public void createSpent(SpentRequest request) {
+    public SpentResponse createSpent(SpentRequest request) {
         User user = currentUser.getCurrentUser();
         Spent spent = mapper.dtoToEntity(request);
         spent.setUser(user);
         repository.save(spent);
+        SpentResponse spentResponse = mapper.entitytoDto(spent);
+        return spentResponse;
     }
 
 
-
     @Override
-    public List<Spent> findAllByUser() {
+    public List<SpentResponse> findAllByUser() {
         User user = currentUser.getCurrentUser();
         List<Spent> spents = repository.findByUser(user);
-        return spents;
+
+        List<SpentResponse> spentsResponse = spents.stream().map(
+                mapper::entitytoDto).toList();
+        return spentsResponse;
     }
 
     @Override

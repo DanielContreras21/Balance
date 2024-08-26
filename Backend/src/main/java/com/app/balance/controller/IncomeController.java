@@ -3,6 +3,7 @@ package com.app.balance.controller;
 import com.app.balance.model.entity.Income;
 import com.app.balance.model.request.IncomeRequest;
 import com.app.balance.model.response.IncomeResponse;
+import com.app.balance.model.response.SpentResponse;
 import com.app.balance.service.abstraction.IncomeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,9 +27,9 @@ public class IncomeController {
     private final IncomeService service;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createIncome(@Valid @RequestBody IncomeRequest request){
-        service.createIncome(request);
-        return ResponseEntity.ok("Income created");
+    public ResponseEntity<IncomeResponse> createIncome(@Valid @RequestBody IncomeRequest request){
+        IncomeResponse resonse = service.createIncome(request);
+        return ResponseEntity.ok(resonse);
     }
 
     @GetMapping("/{id}")
@@ -40,7 +42,12 @@ public class IncomeController {
     public ResponseEntity<String> deleteIncome(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.ok("Deleted Successfully");
+    }
 
+    @GetMapping
+    public ResponseEntity<List<IncomeResponse>> getAllSpentsByUser(){
+        List<IncomeResponse> response = service.findAllByUser();
+        return ResponseEntity.ok(response);
     }
 }
 

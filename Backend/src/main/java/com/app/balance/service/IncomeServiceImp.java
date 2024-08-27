@@ -9,6 +9,7 @@ import com.app.balance.model.response.SpentResponse;
 import com.app.balance.repository.IncomeRepository;
 import com.app.balance.service.abstraction.IncomeService;
 import com.app.balance.utils.CurrentUser;
+import com.app.balance.utils.DateFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class IncomeServiceImp implements IncomeService {
 
     @Autowired
     private IncomeMapper mapper;
+
+    private final DateFormatter dateFormatter;
 
     @Override
     public IncomeResponse createIncome(IncomeRequest request) {
@@ -64,6 +67,11 @@ public class IncomeServiceImp implements IncomeService {
                 income.setQuantity(income.getQuantity());
             } else {
                 income.setQuantity(request.getQuantity());
+            }
+            if (request.getDate() == null){
+                income.setDate(income.getDate());
+            } else{
+                income.setDate(dateFormatter.parseDate(request.getDate()));
             }
             income.setId(income.getId());
             income.setUser(income.getUser());

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -15,4 +16,5 @@ public class SpentRequest {
     private Long id;
     private String concept;
     private Double quantity;
+    private String date;
 }

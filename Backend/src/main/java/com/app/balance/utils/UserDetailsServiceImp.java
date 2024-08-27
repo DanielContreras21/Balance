@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,13 +25,14 @@ public class UserDetailsServiceImp implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = repository.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("El usuario " + username + " no existe."));
+                .orElseThrow(() -> new NoSuchElementException("El usuario " + username + " no existe."));
 
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
         authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(user.getRole().getName().name())));
 
         user.getRole().getPermissions().forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName().name())));
+
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
         user.getPassword(),

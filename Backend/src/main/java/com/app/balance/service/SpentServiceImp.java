@@ -8,6 +8,7 @@ import com.app.balance.model.response.SpentResponse;
 import com.app.balance.repository.SpentRepository;
 import com.app.balance.service.abstraction.SpentService;
 import com.app.balance.utils.CurrentUser;
+import com.app.balance.utils.DateFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class SpentServiceImp implements SpentService {
 
     @Autowired
     private SpentMapper mapper;
+
+    private final DateFormatter dateFormatter;
 
     @Override
     public SpentResponse createSpent(SpentRequest request) {
@@ -66,13 +69,18 @@ public class SpentServiceImp implements SpentService {
             } else {
                 spent.setQuantity(request.getQuantity());
             }
+            if (request.getDate() == null){
+                spent.setDate(spent.getDate());
+            } else{
+                spent.setDate(dateFormatter.parseDate(request.getDate()));
+            }
             spent.setId(spent.getId());
             spent.setUser(spent.getUser());
             spent.setCreated(spent.getCreated());
 
             repository.save(spent);
         }else {
-            throw new NoSuchElementException("El ingreso no existe");
+            throw new NoSuchElementException("El gasto no existe");
         }
     }
 

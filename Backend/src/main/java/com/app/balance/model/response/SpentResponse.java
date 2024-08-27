@@ -1,11 +1,11 @@
 package com.app.balance.model.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -17,4 +17,5 @@ public class SpentResponse {
     private String concept;
     private Double quantity;
     private Date date;
+    private Date created;
 }

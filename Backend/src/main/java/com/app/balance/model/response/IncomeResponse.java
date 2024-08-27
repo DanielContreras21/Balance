@@ -1,6 +1,7 @@
 package com.app.balance.model.response;
 
 import com.app.balance.model.entity.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class IncomeResponse {
     private String concept;
     private Double quantity;
     private Date date;
+    private Date created;
 }

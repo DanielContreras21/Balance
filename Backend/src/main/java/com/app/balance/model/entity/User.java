@@ -45,7 +45,7 @@ public class User {
     private String email;
 
     @Column(name = "created")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date created;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

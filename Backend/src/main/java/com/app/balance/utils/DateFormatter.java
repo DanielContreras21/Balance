@@ -12,7 +12,7 @@ import java.util.Date;
 @Component
 public class DateFormatter {
 
-    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     public Date parseDate(String date){
         try {

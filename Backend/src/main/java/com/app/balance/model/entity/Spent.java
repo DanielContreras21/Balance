@@ -33,11 +33,11 @@ public class Spent {
 
     @NotNull(message = "Ingresa una fecha")
     @Column(name = "date")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     private Date date;
 
     @Column(name = "created")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date created;
 
     @ManyToOne(fetch = FetchType.LAZY)

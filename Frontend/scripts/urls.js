@@ -1,4 +1,4 @@
-const PRODUCTION = true
+const PRODUCTION = false
 
 function backendUrl(){
     if(PRODUCTION){

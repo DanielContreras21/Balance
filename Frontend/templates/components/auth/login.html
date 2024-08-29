@@ -45,7 +45,7 @@
             data: JSON.stringify(userData),
             success: function(response) {
                 localStorage.setItem('jwt', response.jwt)
-                window.location.href = "../../home.html"
+                window.location.href = "../../../home.html"
             },
             error: function(xhr, status, error) {
                 alert('An error occurred: ' + error);

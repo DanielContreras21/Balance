@@ -43,6 +43,8 @@
         <p>Balance: <span id="balance"></span></p>
     </div>
 
+    
+
     <script>
         $(document).ready(function(){
             $.ajax({
@@ -57,7 +59,7 @@
                         $('#allIncomes').append(
                             `<div>
                                 <p><span>${incomeData.concept}</span></p>
-                                <p><span>${incomeData.quantity}</span></p>
+                                <p><span>${NUMBERFORMATTER.format(incomeData.quantity)}</span></p>
                                 <p><span>${DATEFORMATTER.format(incomeData.date)}</span></p>
                             </div>`
                         )
@@ -67,15 +69,15 @@
                         $('#allSpents').append(
                             `<div>
                                 <p><span>${spentData.concept}</span></p>
-                                <p><span>${spentData.quantity}</span></p>
+                                <p><span>${NUMBERFORMATTER.format(spentData.quantity)}</span></p>
                                 <p><span>${DATEFORMATTER.format(spentData.date)}</span></p>
                             </div>`
                         )
                     ))
 
-                    $('#totalIncomes').text(response.totalIncomes)
-                    $('#totalSpents').text(response.totalSpents)
-                    $('#balance').text(response.total)
+                    $('#totalIncomes').text(NUMBERFORMATTER.format(response.totalIncomes))
+                    $('#totalSpents').text(NUMBERFORMATTER.format(response.totalSpents))
+                    $('#balance').text(NUMBERFORMATTER.format(response.total))
                 },
                 error: function(hxr, status, error){
                     alert('An error occurred: ' + error);
@@ -87,7 +89,7 @@
                 location.href = "templates/components/incomes/incomes.html"
             })
             $('#spents').on('click', function(e){
-                location.href = "/spents.html"
+                location.href = "templates/components/spents/spents.html"
             })
             $('#createIncome').on('click', function(e){
                 location.href = "/createIncome.html"
@@ -100,7 +102,7 @@
                 location.reload()
             })
             $('#home').on('click', function(e){
-                location.href = "/templates/home.html"
+                location.reload()
             })
         })
     </script>
@@ -108,5 +110,6 @@
     <script src="/scripts/utils.js"></script>
     <script src="/scripts/urls.js"></script>
     <script src="/scripts/jwtUtils.js"></script>
+
 </body>
 </html>

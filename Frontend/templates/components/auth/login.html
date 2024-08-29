@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/scripts/header.js"></script>
 </head>
+
 <body>
     
     <h1>Iniciar Sesión</h1>
@@ -23,7 +25,6 @@
     <button id="register">
         Registrarse
     </button>
-
     
     <script>
 
@@ -44,7 +45,7 @@
             data: JSON.stringify(userData),
             success: function(response) {
                 localStorage.setItem('jwt', response.jwt)
-                window.location.href = "../../../home.html"
+                window.location.href = "../../home.html"
             },
             error: function(xhr, status, error) {
                 alert('An error occurred: ' + error);
@@ -53,8 +54,8 @@
         });
       });
 
-      $('#register').on('click', function (e){
-            location.href = '/templates/components/auth/register.html'
+    $('#register').on('click', function (e){
+        location.href = '/templates/components/auth/register.html'
         })
     });
     </script>

@@ -6,6 +6,17 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <title>Balance</title>
 </head>
+
+<header>
+
+    <button id="home">
+        Volver a Inicio
+    </button>
+
+    <button id="logout">
+        Cerrar Sesión
+    </button>
+</header>
 <body>
     
     <button id="createIncome">
@@ -31,12 +42,6 @@
         <p>Total Gastos: <span id="totalSpents"></span></p>
         <p>Balance: <span id="balance"></span></p>
     </div>
-
-    <button id="logout">
-        Cerrar Sesión
-    </button>
-
-
 
     <script>
         $(document).ready(function(){
@@ -79,7 +84,7 @@
             })
 
             $('#incomes').on('click', function(e){
-                location.href = "templates/components/incomes/incomes.html"
+                location.href = "components/incomes/incomes.html"
             })
             $('#spents').on('click', function(e){
                 location.href = "/spents.html"
@@ -93,6 +98,9 @@
             $('#logout').on('click', function (e){
                 localStorage.removeItem('jwt')
                 location.reload()
+            })
+            $('#home').on('click', function(e){
+                location.href = "/templates/home.html"
             })
         })
     </script>

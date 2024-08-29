@@ -5,6 +5,17 @@
     <title>Ingresos</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
+
+<header>
+    <button id="home">
+        Volver a Inicio
+    </button>
+
+    <button id="logout">
+        Cerrar Sesión
+    </button>
+</header>
+
 <body>
     <h1>Ingresos</h1>
     <div id="incomes">
@@ -12,6 +23,15 @@
 
     <script>
         $(document).ready(function (){
+
+            $('#home').on('click', function(e){
+                location.href = "/templates/home.html"
+            })
+            
+            $('#logout').on('click', function (e){
+                localStorage.removeItem('jwt')
+                location.reload()
+            })
             $.ajax({
                 url: backendUrl() + "/incomes",
                 method: 'GET',

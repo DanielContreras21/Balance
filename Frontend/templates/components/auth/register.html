@@ -7,38 +7,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
-    <script>
-    $(document).ready(function() {
-    $('#registerForm').on('submit', function(e) {
-        e.preventDefault();
-    
-        var userData = {
-            name: $('#name').val(),
-            username: $('#username').val(),
-            email: $('#email').val(),
-            confirmEmail: $('#confirmEmail').val(),
-            password: $('#password').val(),
-            confirmPassword: $('#confirmPassword').val()
-        };
-    
-    $.ajax({
-        url: "http://localhost:8080/auth/register",
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(userData),
-        success: function(response) {
-            window.location.href = "http://127.0.0.1:5500/login.html";
-            console.log(response);
-        },
-        error: function(xhr, status, error) {
-            alert('An error occurred: ' + error);
-            console.error(xhr.responseText);
-        }
-    });
-  });
-});
-
-    </script>
     
     <h1>Registro</h1>
     <form id="registerForm">
@@ -59,7 +27,38 @@
         <input type="password" id="confirmPassword" name="confirmPassword" required><br>
 
         <button type="submit">Registro</button>
-
     </form>
+
+    <script>
+        $(document).ready(function() {
+        $('#registerForm').on('submit', function(e) {
+            e.preventDefault();
+        
+            var userData = {
+                name: $('#name').val(),
+                username: $('#username').val(),
+                email: $('#email').val(),
+                confirmEmail: $('#confirmEmail').val(),
+                password: $('#password').val(),
+                confirmPassword: $('#confirmPassword').val()
+            };
+        
+        $.ajax({
+            url: "http://localhost:8080/auth/register",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(userData),
+            success: function(response) {
+                window.location.href = "login.html";
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + error);
+                console.error(xhr.responseText);
+            }
+        });
+      });
+    });
+        </script>
 </body>
 </html>

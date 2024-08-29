@@ -32,17 +32,17 @@
         <p>Balance: <span id="balance"></span></p>
     </div>
 
-    <script src="urls.js"></script>
+    <script src="scripts/utils.js"></script>
 
     <script>
         $(document).ready(function(){
             const jwt = localStorage.getItem('jwt')
             $.ajax({
-                url: bacekendUrl() + "/balance",
+                url: backendUrl() + "/balance",
                 method: 'GET',
                 contentType: 'application/json',
                 headers: {
-                    "Authorization" : "Bearer " + jwt
+                    "Authorization" : "Bearer " + JWT
                 },
                 success:function(response){
                     response.incomes.map((incomeData)=>(
@@ -76,13 +76,13 @@
             })
 
             $('#incomes').on('click', function(e){
-                location.href = "/incomes.html"
+                location.href = "templates/components/incomes/incomes.html"
             })
             $('#spents').on('click', function(e){
                 location.href = "/spents.html"
             })
             $('#createIncome').on('click', function(e){
-                location.href = "/createIncome.html"
+                location.href = ""
             })
             $('#createSpent').on('click', function(e){
                 location.href = "/createSpent.html"

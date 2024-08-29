@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingresos</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <h1>Ingresos</h1>
+    <div id="incomes">
+    </div>
+    <span id="hola"></span>
+
+    <script>
+        $(document).ready(function (){
+            $.ajax({
+                url: backendUrl() + "/incomes",
+                method: 'GET',
+                contentType: 'application/json',
+                headers: {
+                    "Authorization" : "Bearer " + JWT
+                },
+                success:function (response){
+                    response.forEach((incomeData)=> (
+                        $('#incomes').append(
+                            `<div>
+                                <p><span>${incomeData.concept}</span></p>
+                                <p><span>${NUMBERFORMATTER.format(incomeData.quantity)}</span></p>
+                                <p><span>${DATEFORMATTER.format(incomeData.date)}</span></p>
+                            </div>`
+                        )
+                    ))
+                },
+                error:function (xhr, status, error){
+                    console.error(xhr.responseText);
+                }
+            })
+        })
+    </script>
+    <script src="/scripts/utils.js"></script>
+</body>
+</html>

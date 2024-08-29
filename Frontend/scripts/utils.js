@@ -1,12 +1,3 @@
-const PRODUCTION = false
-function backendUrl(){
-    if(PRODUCTION){
-        return "https://balance-tests.up.railway.app"
-    } else{
-        return "http://localhost:8080"
-    }
-}
-
 const JWT = localStorage.getItem('jwt')
 
 const NUMBERFORMATTER = new Intl.NumberFormat('es-CO', {

@@ -21,7 +21,6 @@
 
     <script>
         $(document).ready(function() {
-            console.log("hola")
         $('#loginForm').on('submit', function(e) {
             e.preventDefault();
             
@@ -32,7 +31,7 @@
             };
         
         $.ajax({
-            url: "http://localhost:8080/auth/login",
+            url: backendUrl() + "/auth/login",
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(userData),

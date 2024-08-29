@@ -44,7 +44,7 @@
             };
         
         $.ajax({
-            url: "http://localhost:8080/auth/register",
+            url: backendUrl() + "/auth/register",
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(userData),

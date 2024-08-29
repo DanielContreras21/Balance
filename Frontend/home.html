@@ -36,7 +36,6 @@
 
     <script>
         $(document).ready(function(){
-            const jwt = localStorage.getItem('jwt')
             $.ajax({
                 url: backendUrl() + "/balance",
                 method: 'GET',

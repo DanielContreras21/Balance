@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <title>Balance</title>
+</head>
+<body>
+    
+    <button id="createIncome">
+        Crear Ingreso
+    </button>
+    <div id="incomes">
+        <div id="allIncomes">
+            <label for="allIncomes">Ingresos Recientes</label>
+        </div>
+    </div>
+
+    <button id="createSpent">
+        Nuevo Gasto
+    </button>
+    <div id="spents">
+        <div id="allSpents">
+            <label for="allSpents">Gastos Totales</label>
+        </div>
+    </div>
+
+    <div id="total">
+        <p>Total Ingresos: <span id="totalIncomes"></span></p>
+        <p>Total Gastos: <span id="totalSpents"></span></p>
+        <p>Balance: <span id="balance"></span></p>
+    </div>
+
+    <script src="urls.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            const jwt = localStorage.getItem('jwt')
+            $.ajax({
+                url: bacekendUrl() + "/balance",
+                method: 'GET',
+                contentType: 'application/json',
+                headers: {
+                    "Authorization" : "Bearer " + jwt
+                },
+                success:function(response){
+                    response.incomes.map((incomeData)=>(
+                        $('#allIncomes').append(
+                            `<div>
+                                <p><span>${incomeData.concept}</span></p>
+                                <p><span>${incomeData.quantity}</span></p>
+                                <p><span>${incomeData.date}</span></p>
+                            </div>`
+                        )
+                    ))
+
+                    response.spents.map((spentData)=>(
+                        $('#allSpents').append(
+                            `<div>
+                                <p><span>${spentData.concept}</span></p>
+                                <p><span>${spentData.quantity}</span></p>
+                                <p><span>${spentData.date}</span></p>
+                            </div>`
+                        )
+                    ))
+                    
+                    $('#totalIncomes').text(response.totalIncomes)
+                    $('#totalSpents').text(response.totalSpents)
+                    $('#balance').text(response.total)
+                },
+                error: function(hxr, status, error){
+                    alert('An error occurred: ' + error);
+                    console.error(xhr.responseText);
+                }
+            })
+
+            $('#incomes').on('click', function(e){
+                location.href = "/incomes.html"
+            })
+            $('#spents').on('click', function(e){
+                location.href = "/spents.html"
+            })
+            $('#createIncome').on('click', function(e){
+                location.href = "/createIncome.html"
+            })
+            $('#createSpent').on('click', function(e){
+                location.href = "/createSpent.html"
+            })
+        })
+    </script>
+</body>
+</html>

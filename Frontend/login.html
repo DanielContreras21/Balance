@@ -9,6 +9,7 @@
 <body>
     <script>
     $(document).ready(function() {
+        console.log("hola")
     $('#loginForm').on('submit', function(e) {
         e.preventDefault();
         
@@ -25,7 +26,7 @@
         data: JSON.stringify(userData),
         success: function(response) {
             localStorage.setItem('jwt', response.jwt)
-            window.location.href = "http://127.0.0.1:5500/home"
+            window.location.href = "http://127.0.0.1:5500/home.html"
         },
         error: function(xhr, status, error) {
             alert('An error occurred: ' + error);

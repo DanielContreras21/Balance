@@ -1,4 +1,4 @@
-const PRODUCTION = false
+const PRODUCTION = true
 function backendUrl(){
     if(PRODUCTION){
         return "https://balance-tests.up.railway.app"

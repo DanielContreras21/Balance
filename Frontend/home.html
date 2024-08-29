@@ -57,7 +57,7 @@
                         $('#allIncomes').append(
                             `<div>
                                 <p><span>${incomeData.concept}</span></p>
-                                <p><span>${incomeData.quantity}</span></p>
+                                <p><span>${NUMBERFORMATTER.format(spentData.quantity)}</span></p>
                                 <p><span>${DATEFORMATTER.format(incomeData.date)}</span></p>
                             </div>`
                         )
@@ -67,15 +67,15 @@
                         $('#allSpents').append(
                             `<div>
                                 <p><span>${spentData.concept}</span></p>
-                                <p><span>${spentData.quantity}</span></p>
+                                <p><span>${NUMBERFORMATTER.format(spentData.quantity)}</span></p>
                                 <p><span>${DATEFORMATTER.format(spentData.date)}</span></p>
                             </div>`
                         )
                     ))
 
-                    $('#totalIncomes').text(response.totalIncomes)
-                    $('#totalSpents').text(response.totalSpents)
-                    $('#balance').text(response.total)
+                    $('#totalIncomes').text(NUMBERFORMATTER.format(response.totalIncomes))
+                    $('#totalSpents').text(NUMBERFORMATTER.format(response.totalSpents))
+                    $('#balance').text(NUMBERFORMATTER.format(response.total))
                 },
                 error: function(hxr, status, error){
                     alert('An error occurred: ' + error);

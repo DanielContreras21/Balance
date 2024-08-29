@@ -19,10 +19,16 @@
         <button type="submit">Iniciar Sesión</button>
     </form>
 
-    <script src="/scripts/urls.js"></script>
+    <p>¿No te has registrado?</br>Registrate Aquí:</p>
+    <button id="register">
+        Registrarse
+    </button>
+
+    
     <script>
 
         $(document).ready(function() {
+
         $('#loginForm').on('submit', function(e) {
             e.preventDefault();
 
@@ -46,8 +52,14 @@
             }
         });
       });
+
+      $('#register').on('click', function (e){
+            location.href = '/templates/components/auth/register.html'
+        })
     });
-        </script>
+    </script>
+
+    <script src="/scripts/urls.js"></script>
 
 </body>
 </html>

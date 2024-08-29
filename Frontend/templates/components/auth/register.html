@@ -29,6 +29,11 @@
         <button type="submit">Registro</button>
     </form>
 
+    <p>¿Ya tienes cuenta?</br>Inicia Sesión Aquí:</p>
+    <button id="login">
+        Iniciar Sesión
+    </button>
+
     <script>
         $(document).ready(function() {
         $('#registerForm').on('submit', function(e) {
@@ -58,6 +63,10 @@
             }
         });
       });
+
+      $('#login').on('click', function (e){
+            location.href = '/templates/components/auth/login.html'
+        })
     });
         </script>
     <script src="scripts/urls.js"></script>

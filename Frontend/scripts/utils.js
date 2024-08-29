@@ -16,3 +16,4 @@ const DATEFORMATTER = new Intl.DateTimeFormat('es-CO', {
     second: '2-digit',
     hour12: false
 });
+

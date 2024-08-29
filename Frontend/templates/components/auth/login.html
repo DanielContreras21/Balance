@@ -19,12 +19,13 @@
         <button type="submit">Iniciar Sesión</button>
     </form>
 
+    <script src="/scripts/urls.js"></script>
     <script>
+
         $(document).ready(function() {
         $('#loginForm').on('submit', function(e) {
             e.preventDefault();
-            
-    
+
             var userData = {
                 username: $('#username').val(),
                 password: $('#password').val(),
@@ -47,5 +48,6 @@
       });
     });
         </script>
+
 </body>
 </html>

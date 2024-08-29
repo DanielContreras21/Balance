@@ -32,7 +32,11 @@
         <p>Balance: <span id="balance"></span></p>
     </div>
 
-    <script src="scripts/utils.js"></script>
+    <button id="logout">
+        Cerrar Sesión
+    </button>
+
+
 
     <script>
         $(document).ready(function(){
@@ -63,7 +67,7 @@
                             </div>`
                         )
                     ))
-                    
+
                     $('#totalIncomes').text(response.totalIncomes)
                     $('#totalSpents').text(response.totalSpents)
                     $('#balance').text(response.total)
@@ -81,12 +85,20 @@
                 location.href = "/spents.html"
             })
             $('#createIncome').on('click', function(e){
-                location.href = ""
+                location.href = "/createIncome.html"
             })
             $('#createSpent').on('click', function(e){
                 location.href = "/createSpent.html"
             })
+            $('#logout').on('click', function (e){
+                localStorage.removeItem('jwt')
+                location.reload()
+            })
         })
     </script>
+
+    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/urls.js"></script>
+    <script src="/scripts/jwtUtils.js"></script>
 </body>
 </html>

@@ -241,7 +241,7 @@
             <label for="date">Fecha</label>
             <input type="date" name="date" id="date" required><br>
 
-            <button type="submit" onclick="closeModal('createIncomeModal')">
+            <button id ="incomeCreated" type="submit" onclick="closeModal('createIncomeModal')">
                 Crear Ingreso
             </button>
         </form>
@@ -254,15 +254,15 @@
         <h2>Crear Gasto</h2>
         <form id="createSpentForm">
             <label for="concept">Concepto</label>
-            <input type="text" name="concept" id="concept" required><br>
+            <input type="text" name="concept" id="concept1" required><br>
 
             <label for="quantity">Cantidad</label>
-            <input type="text" name="quantity" id="quantity" required><br>
+            <input type="text" name="quantity" id="quantity1" required><br>
 
             <label for="date">Fecha</label>
-            <input type="date" name="date" id="date" required><br>
+            <input type="date" name="date" id="date1" required><br>
 
-            <button type="submit" onclick="closeModal('createSpentModal')">
+            <button id="spentCreated"type="submit" onclick="closeModal('createSpentModal')">
                 Crear Gasto
             </button>
         </form>
@@ -349,6 +349,38 @@
                 }
             })
         })
+
+        $('#createSpentForm').on('submit', function (e){
+                e.preventDefault()
+
+                var concept = $('#concept1').val()
+                var quantity = $('#quantity1').val()
+                var date = $('#date1').val()
+                
+
+                const dateFormatted = formatDateToString(date)
+        
+                $.ajax({
+                    url: backendUrl() + "/spents/create",
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        concept: concept,
+                        quantity: quantity,
+                        date : dateFormatted
+                    }
+                    ),
+                    headers: {
+                        "Authorization" : "Bearer " + JWT
+                },
+                success:function(response){
+                    console.log(response)
+                },
+                error:function (xhr, status, error){
+                    console.error(xhr.responseText);
+                }
+            })
+        })
         
             $('#allIncomes').on('click', function(e){
                 location.href = "/templates/components/incomes/incomes.html"
@@ -363,6 +395,15 @@
             $('#home').on('click', function(e){
                 location.reload()
             })
+            
+            $('#incomeCreated').on('click', function(e){
+                location.reload()
+            })
+
+            $('#spentCreated').on('click', function(e){
+                location.reload()
+            })
+
         })
     </script>
 

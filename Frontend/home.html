@@ -5,35 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <title>Balance</title>
+
+    <style>
+        .modal::backdrop{
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #incomes{
+            color: red;
+        }
+
+        #spents{
+            color: red;
+        }
+
+        #total{
+            color: red;
+        }
+    </style>
 </head>
 
 <header>
 
-    <button id="home">
+    <button onclick="openModal()">
         Volver a Inicio
     </button>
 
     <button id="logout">
         Cerrar Sesión
     </button>
+
 </header>
 <body>
     
-    <button id="createIncome">
-        Crear Ingreso
-    </button>
+    
+
     <div id="incomes">
+        <button onclick="openModal('createIncomeModal')">
+            Crear Ingreso
+        </button>
         <div id="allIncomes">
-            <label for="allIncomes">Ingresos Recientes</label>
+            <p>Ingresos Recientes</p>
         </div>
     </div>
 
-    <button id="createSpent">
-        Nuevo Gasto
-    </button>
+    
+
     <div id="spents">
+        <button onclick="openModal('createSpentModal')">
+            Nuevo Gasto
+        </button>
         <div id="allSpents">
-            <label for="allSpents">Gastos Totales</label>
+            <p>Gastos Recientes</p>
         </div>
     </div>
 
@@ -43,7 +66,47 @@
         <p>Balance: <span id="balance"></span></p>
     </div>
 
-    
+    <dialog class="modal" id="createIncomeModal">
+        <h2>Crear Ingreso</h2>
+        <form id="createIncomeForm">
+            <label for="concept">Concepto</label>
+            <input type="text" name="concept" id="concept" required><br>
+
+            <label for="quantity">Cantidad</label>
+            <input type="text" name="quantity" id="quantity" required><br>
+
+            <label for="date">Fecha</label>
+            <input type="date" name="date" id="date" required><br>
+
+            <button type="submit" onclick="closeModal('createIncomeModal')">
+                Crear Ingreso
+            </button>
+        </form>
+        <button onclick="closeModal('createIncomeModal')">
+            Salir
+        </button>
+    </dialog>
+
+    <dialog class="modal" id="createSpentModal">
+        <h2>Crear Gasto</h2>
+        <form id="createSpentForm">
+            <label for="concept">Concepto</label>
+            <input type="text" name="concept" id="concept" required><br>
+
+            <label for="quantity">Cantidad</label>
+            <input type="text" name="quantity" id="quantity" required><br>
+
+            <label for="date">Fecha</label>
+            <input type="date" name="date" id="date" required><br>
+
+            <button type="submit" onclick="closeModal('createSpentModal')">
+                Crear Gasto
+            </button>
+        </form>
+        <button onclick="closeModal('createSpentModal')">
+            Salir
+        </button>
+    </dialog>
 
     <script>
         $(document).ready(function(){
@@ -85,17 +148,43 @@
                 }
             })
 
+            $('#createIncomeForm').on('submit', function (e){
+                e.preventDefault()
+
+                var concept = $('#concept').val()
+                var quantity = $('#quantity').val()
+                var date = $('#date').val()
+                
+
+                const dateFormatted = formatDateToString(date)
+        
+                $.ajax({
+                    url: backendUrl() + "/incomes/create",
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        concept: concept,
+                        quantity: quantity,
+                        date : dateFormatted
+                    }
+                    ),
+                    headers: {
+                        "Authorization" : "Bearer " + JWT
+                },
+                success:function(response){
+                    console.log(response)
+                },
+                error:function (xhr, status, error){
+                    console.error(xhr.responseText);
+                }
+            })
+        })
+        
             $('#incomes').on('click', function(e){
-                location.href = "templates/components/incomes/incomes.html"
+                location.href = "/templates/components/incomes/incomes.html"
             })
             $('#spents').on('click', function(e){
                 location.href = "templates/components/spents/spents.html"
-            })
-            $('#createIncome').on('click', function(e){
-                location.href = "/createIncome.html"
-            })
-            $('#createSpent').on('click', function(e){
-                location.href = "/createSpent.html"
             })
             $('#logout').on('click', function (e){
                 localStorage.removeItem('jwt')

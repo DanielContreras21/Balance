@@ -7,21 +7,185 @@
     <title>Balance</title>
 
     <style>
-        .modal::backdrop{
-            background-color: rgba(0, 0, 0, 0.5);
-        }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
 
-        #incomes{
-            color: red;
-        }
+    header {
+        display: flex;
+        justify-content: space-between;
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        align-items: center;
+    }
 
-        #spents{
-            color: red;
-        }
+    #incomesSpentsContainer{
+        display: flex;
+        flex-direction: row;
+        margin: 20px;
+    }
 
-        #total{
+    header button {
+        background-color: #555;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    header button:hover {
+        background-color: #777;
+    }
+
+    #incomes, #spents{
+        width: 50%;
+        margin-left: 5px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    #total{
+        background-color: white;
+        margin: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #incomes p, #spents p, #total p {
+        font-size: 18px;
+        margin: 10px;
+    }
+
+    .balanceDetail{
+        text-align: center;
+    }
+
+    #incomes button, #spents button{
+        color: white;
+        border: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+        border: black;
+        margin-top: 10px;
+        width: 13%;
+        text-align: center;
+    }
+
+    #incomes button {
+        background-color: #28a745;
+        margin-left: 10px;
+    }
+
+    #spents button {
+        background-color: #df4350;
+        align-self: flex-end;
+        margin-right: 10px;
+    }
+
+
+    #incomes button:hover{
+        background-color: #218838;
+    }
+
+    #spents button:hover {
+        background-color: #a52222;
+    }
+
+    .modal {
+        width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal h2 {
+        margin-top: 0;
+    }
+
+    .modal form label {
+        display: block;
+        margin: 10px 0 5px;
+    }
+
+    .modal form input[type="text"], .modal form input[type="date"] {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    .modal button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+    
+    .exitButton{
+        align-self: center;
+        margin-left: 42%;
+    }
+
+    .modal button:hover {
+        background-color: #0056b3;
+    }
+
+    #createIncomeForm button[type="submit"] {
+        background-color: #28a745;
+    }
+
+    #createIncomeForm button[type="submit"]:hover {
+        background-color: #218838;
+    }
+
+    #createSpentForm button[type="submit"] {
+        background-color: #df4350;
+    }
+
+    #createSpentForm button[type="submit"]:hover {
+        background-color: #a52222;
+    }
+
+    .modal button[type="submit"] {
+        width: 100%;
+    }
+
+    #allIncomes div, #allSpents div {
+        padding: 10px;
+        margin-left: 5px;
+        margin-right: 5px;
+        background-color: #e9ecef;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+
+    .positive {
+            color: green;
+    }
+    .negative {
             color: red;
-        }
+    }
     </style>
 </head>
 
@@ -36,27 +200,26 @@
     </button>
 
 </header>
+
 <body>
     
-    
-
-    <div id="incomes">
-        <button onclick="openModal('createIncomeModal')">
-            Crear Ingreso
-        </button>
-        <div id="allIncomes">
-            <p>Ingresos Recientes</p>
+    <div id="incomesSpentsContainer">
+        <div id="incomes">
+            <button id="createIncomeButton" onclick="openModal('createIncomeModal')">
+                Nuevo Ingreso
+            </button>
+            <div id="allIncomes">
+                <p class="balanceDetail">Ingresos Recientes</p>
+            </div>
         </div>
-    </div>
 
-    
-
-    <div id="spents">
-        <button onclick="openModal('createSpentModal')">
-            Nuevo Gasto
-        </button>
-        <div id="allSpents">
-            <p>Gastos Recientes</p>
+        <div id="spents">
+            <button id="createSpentButton" onclick="openModal('createSpentModal')">
+                Nuevo Gasto
+            </button>
+            <div id="allSpents">
+                <p class="balanceDetail">Gastos Recientes</p>
+            </div>
         </div>
     </div>
 
@@ -82,7 +245,7 @@
                 Crear Ingreso
             </button>
         </form>
-        <button onclick="closeModal('createIncomeModal')">
+        <button class="exitButton" onclick="closeModal('createIncomeModal')">
             Salir
         </button>
     </dialog>
@@ -103,7 +266,7 @@
                 Crear Gasto
             </button>
         </form>
-        <button onclick="closeModal('createSpentModal')">
+        <button class="exitButton" onclick="closeModal('createSpentModal')">
             Salir
         </button>
     </dialog>
@@ -118,6 +281,7 @@
                     "Authorization" : "Bearer " + JWT
                 },
                 success:function(response){
+
                     response.incomes.map((incomeData)=>(
                         $('#allIncomes').append(
                             `<div>
@@ -137,6 +301,12 @@
                             </div>`
                         )
                     ))
+                    
+                    if(response.total > 0){
+                        $('#balance').addClass('positive')
+                    }else{
+                        $('#balance').addClass('negative')
+                    }
 
                     $('#totalIncomes').text(NUMBERFORMATTER.format(response.totalIncomes))
                     $('#totalSpents').text(NUMBERFORMATTER.format(response.totalSpents))
@@ -180,10 +350,10 @@
             })
         })
         
-            $('#incomes').on('click', function(e){
+            $('#allIncomes').on('click', function(e){
                 location.href = "/templates/components/incomes/incomes.html"
             })
-            $('#spents').on('click', function(e){
+            $('#allSpents').on('click', function(e){
                 location.href = "templates/components/spents/spents.html"
             })
             $('#logout').on('click', function (e){
